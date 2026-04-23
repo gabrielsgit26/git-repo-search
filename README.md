@@ -1,21 +1,44 @@
-# Next.js template
+# Git Repo Search
 
-This is a Next.js template with shadcn/ui.
+GitHub API を使ってリポジトリ検索と詳細確認を行う Next.js アプリです。
 
-## Adding components
+## 実装要件
 
-To add components to your app, run the following command:
+- キーワード入力で `search/repositories` を使った検索
+- リポジトリ一覧表示
+- 一覧から詳細ページへの遷移（モーダルではなく別ページ）
+- 詳細ページに以下を表示
+  - リポジトリ名
+  - オーナーアイコン
+  - 使用言語
+  - スター数
+  - ウォッチャー数
+  - フォーク数
+  - Issue 数
+
+## ローカル起動
 
 ```bash
-npx shadcn@latest add button
+npm install
+npm run dev
 ```
 
-This will place the ui components in the `components` directory.
+`http://localhost:3000` を開いてください。
 
-## Using components
+## 注力した点（要約）
 
-To use the components in your app, import them as follows:
+- **UXの一貫性**
+  - `Load more` で一覧を段階的に追加読み込み
+  - 一覧で開いたリポジトリはリンク色を変更（既読ライク）
+- **戻る操作時の体験**
+  - 詳細ページから戻った際に検索状態を維持し、スクロール位置の復元を実装
+- **詳細ページの情報性**
+  - 各メトリクスにアイコンを付与して視認性を向上
+  - Clone URL とコピー機能を追加
+- **UI統一**
+  - shadcn/ui コンポーネント中心で構成
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+
+## 補足
+
+- GitHub API は未認証リクエストのため、レート制限が低めです。
