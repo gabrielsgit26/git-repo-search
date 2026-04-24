@@ -5,6 +5,8 @@ const GITHUB_API = "https://api.github.com"
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const query = (searchParams.get("q") ?? "").trim()
+  const language = (searchParams.get("language") ?? "").trim()
+  const sort = (searchParams.get("sort") ?? "stars-desc").trim()
   const page = Number.parseInt(searchParams.get("page") ?? "1", 10)
   const perPage = Number.parseInt(searchParams.get("per_page") ?? "20", 10)
 
@@ -17,8 +19,25 @@ export async function GET(request: NextRequest) {
 
   const safePage = Number.isFinite(page) && page > 0 ? page : 1
   const safePerPage = Number.isFinite(perPage) ? Math.min(20, Math.max(10, perPage)) : 20
+  const sortMapping: Record<string, { sort: "stars" | "forks" | "updated"; order: "asc" | "desc" }> = {
+    "stars-desc": { sort: "stars", order: "desc" },
+    "stars-asc": { sort: "stars", order: "asc" },
+    "forks-desc": { sort: "forks", order: "desc" },
+    "forks-asc": { sort: "forks", order: "asc" },
+    "updated-desc": { sort: "updated", order: "desc" },
+    "updated-asc": { sort: "updated", order: "asc" },
+  }
+  const safeSort = sortMapping[sort] ?? sortMapping["stars-desc"]
+  const qualifiedQuery = language ? `${query} language:${language}` : query
 
-  const url = `${GITHUB_API}/search/repositories?q=${encodeURIComponent(query)}&page=${safePage}&per_page=${safePerPage}`
+  const urlSearchParams = new URLSearchParams({
+    q: qualifiedQuery,
+    page: safePage.toString(),
+    per_page: safePerPage.toString(),
+  })
+  urlSearchParams.set("sort", safeSort.sort)
+  urlSearchParams.set("order", safeSort.order)
+  const url = `${GITHUB_API}/search/repositories?${urlSearchParams.toString()}`
 
   try {
     const response = await fetch(url, {

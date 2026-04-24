@@ -40,10 +40,14 @@ const GITHUB_API = "https://api.github.com"
 export async function fetchRepositories(
   query: string,
   page: number,
-  perPage = 20
+  perPage = 20,
+  language = "",
+  sort = "stars-desc"
 ): Promise<RepositorySearchResponse> {
+  const languageParam = language.trim()
+  const sortParam = sort.trim() || "stars-desc"
   const response = await fetch(
-    `/api/repositories?q=${encodeURIComponent(query)}&page=${page}&per_page=${perPage}`
+    `/api/repositories?q=${encodeURIComponent(query)}&page=${page}&per_page=${perPage}&language=${encodeURIComponent(languageParam)}&sort=${encodeURIComponent(sortParam)}`
   )
   const data = (await response.json()) as RepositorySearchResponse
 

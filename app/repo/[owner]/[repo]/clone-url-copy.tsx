@@ -14,7 +14,7 @@ export function CloneUrlCopy({ cloneUrl }: CloneUrlCopyProps) {
 
   async function handleCopy() {
     try {
-      // 成功時は短時間だけ完了アイコンを表示してフィードバックする。
+      // コピー成功時は、短時間だけ完了アイコンを表示して状態を伝える。
       await navigator.clipboard.writeText(cloneUrl)
       setCopied(true)
       window.setTimeout(() => {
@@ -26,10 +26,10 @@ export function CloneUrlCopy({ cloneUrl }: CloneUrlCopyProps) {
   }
 
   return (
-    <div className="rounded-md border p-3">
+    <div className="rounded-lg border border-border/70 bg-background/35 p-4">
       <p className="text-muted-foreground text-sm">クローンURL</p>
       <div className="mt-2 flex items-center gap-2">
-        <code className="bg-muted/60 block flex-1 rounded px-2 py-1 text-xs break-all">{cloneUrl}</code>
+        <code className="bg-muted/65 block flex-1 rounded-md px-3 py-2 text-xs break-all">{cloneUrl}</code>
         <Button
           type="button"
           variant="outline"

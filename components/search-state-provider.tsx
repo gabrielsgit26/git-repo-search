@@ -20,6 +20,10 @@ type SearchStateContextValue = {
   setKeyword: (value: string) => void
   activeQuery: string
   setActiveQuery: (value: string) => void
+  activeLanguage: string
+  setActiveLanguage: (value: string) => void
+  activeSort: string
+  setActiveSort: (value: string) => void
   items: SearchRepositoryItem[]
   setItems: Dispatch<SetStateAction<SearchRepositoryItem[]>>
   totalCount: number
@@ -39,6 +43,8 @@ const SearchStateContext = createContext<SearchStateContextValue | null>(null)
 function SearchStateProvider({ children }: { children: ReactNode }) {
   const [keyword, setKeyword] = useState("")
   const [activeQuery, setActiveQuery] = useState("")
+  const [activeLanguage, setActiveLanguage] = useState("")
+  const [activeSort, setActiveSort] = useState("stars-desc")
   const [items, setItems] = useState<SearchRepositoryItem[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(0)
@@ -47,7 +53,7 @@ function SearchStateProvider({ children }: { children: ReactNode }) {
   const [openedRepoKeys, setOpenedRepoKeys] = useState<string[]>([])
 
   function markRepoOpened(key: string) {
-    // 既読状態は重複登録しない。
+    // 既読状態は重複して登録しない。
     setOpenedRepoKeys((prev) => (prev.includes(key) ? prev : [...prev, key]))
   }
 
@@ -56,7 +62,7 @@ function SearchStateProvider({ children }: { children: ReactNode }) {
     sessionStorage.setItem("repo-search-scroll-y", scrollY.toString())
   }, [scrollY])
   useEffect(() => {
-    // 初回表示時のみ保存済みスクロール位置を復元。
+    // 初回表示時のみ、保存済みのスクロール位置を復元する。
     const savedScrollY = sessionStorage.getItem("repo-search-scroll-y")
     if (savedScrollY) {
       setScrollY(Number(savedScrollY))
@@ -70,6 +76,10 @@ function SearchStateProvider({ children }: { children: ReactNode }) {
         setKeyword,
         activeQuery,
         setActiveQuery,
+        activeLanguage,
+        setActiveLanguage,
+        activeSort,
+        setActiveSort,
         items,
         setItems,
         totalCount,

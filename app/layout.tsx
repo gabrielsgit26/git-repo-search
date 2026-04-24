@@ -1,11 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google"
 
 import "./globals.css"
 import { SearchStateProvider } from "@/components/search-state-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const notoSans = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-sans" })
+const notoSerif = Noto_Serif_JP({ subsets: ["latin"], variable: "--font-serif" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -19,9 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ja"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn("antialiased", fontMono.variable, "font-sans", notoSans.variable, notoSerif.variable)}
     >
       <body>
         <ThemeProvider>

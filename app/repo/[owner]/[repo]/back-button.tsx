@@ -17,7 +17,7 @@ export function BackButton() {
   }
 
   return (
-    <Button variant="ghost" className="w-fit" onClick={handleBack}>
+    <Button variant="ghost" className="w-fit rounded-full px-4 text-foreground/90" onClick={handleBack}>
       ← 検索結果に戻る
     </Button>
   )
